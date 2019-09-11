@@ -28,6 +28,7 @@
     "sequelize-cli": "^5.4.0"
   },
   "scripts": {
+    "start": "node index.js",
     "start:dev": "nodemon ./bin/www",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

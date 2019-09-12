@@ -91,10 +91,10 @@ module.exports = {
             message: 'Fruta No Encontrado',
           });
         }
-        return fruta
+        return fruta        
           .update({
-            nombre: req.body.nombre,
-            url: req.body.url,
+            nombre: req.body.nombre || fruta.nombre,
+            url: url_cloudinary || fruta.url,
             categoriaid: req.body.categoriaid,
             preguntaid: req.body.preguntaid
           })

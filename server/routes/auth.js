@@ -24,7 +24,7 @@ module.exports = (app, passport) => {
 	});
 
 	app.post('/login', isNotLoggedIn, passport.authenticate('local-login', {
-		successRedirect: '/admin',
+		successRedirect: '/',
 		failureRedirect: '/login',
 		failureFlash: true
 	}));
@@ -37,7 +37,7 @@ module.exports = (app, passport) => {
 	});
 
 	app.post('/signup', isNotLoggedIn, passport.authenticate('local-signup', {
-            successRedirect: '/admin',
+            successRedirect: '/login',
             failureRedirect: '/signup',
             failureFlash: true // allow flash messages
         })
@@ -45,10 +45,23 @@ module.exports = (app, passport) => {
 
 	//admin view
 	app.get('/admin', isLoggedIn, (req, res) => {
-		res.render('admin', {
-			user: req.user
-		});
+		res.render('admin.ejs');
 	});
+	app.post('/admin', isLoggedIn, passport.authenticate('local-login', {
+		successRedirect: '/admin',
+		failureRedirect: '/login',
+		failureFlash: true
+	}));
+
+	//evaluacion view	
+	app.get('/evaluacion', isLoggedIn, (req, res) =>{
+		res.render('evaluacion.ejs');
+	});
+	app.post('/evaluacion', isLoggedIn, passport.authenticate('local-login', {
+		successRedirect: '/evaluacion',
+		failureRedirect: '/login',
+		failureFlash: true
+	}));
 
 	// logout
 	app.get('/logout', (req, res) => {
@@ -72,5 +85,5 @@ function isNotLoggedIn (req, res, next) {
         console.log("auntenticando");
 		return next();
 	} else
-    	res.redirect('/admin');
+    	res.redirect('/');
 }

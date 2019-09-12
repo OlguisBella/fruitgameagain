@@ -1,5 +1,6 @@
 
 var frutasRepasadas = [];
+var usuario = [];
 var costa = [];
 var sierra = [];
 var preguntas = [];
@@ -19,7 +20,21 @@ var valorNivel = 2;
 var nivelActual = 1;
 
 $(document).ready(function () {
-
+    $.ajax({
+        type: 'GET',
+        url: "/api/sesion",
+        async: false,
+        beforeSend: function (xhr) {
+            if (xhr && xhr.overrideMimeType) {
+                xhr.overrideMimeType('application/json;charset=utf-8');
+            }
+        },
+        dataType: 'json',
+        success: function (data) {
+            usuario = data;
+            console.log(usuario["id"]);
+        }
+    });
     //Se obtiene los id de categoria
     $.ajax({
         type: 'GET',
@@ -250,7 +265,6 @@ function construirNivel(nivel, n){
         numNivel = "";
         imgNivel = "n1.png";
         n_preguntas_n1 = frutasNivel.length;
-        console.log(n_preguntas_n1)
     }
     if(nivel["descripcion"] == "Nivel 2"){
         frutasNivel = sierra["frutas"];
@@ -310,7 +324,6 @@ function construirNivel(nivel, n){
         var sectionPreg1 = $("<section></section>")
             .attr("id", "seccionPreg" + n + (parseInt(key,10)+1))
             .attr("class", claseOculta);
-        console.log("seccionPreg" + (n + 1) + (parseInt(key,10)+1));
 
         //Seccion imagen fruta
         var divContainerFruta = $("<div></div>")
@@ -517,7 +530,7 @@ function construirFrutaSierra() {
 
 //SECCIÓN DE EVALUACIÓN
 
-EvaluarPregunta();
+//EvaluarPregunta();
 
 function EvaluarPregunta() {
     var numPreguntas = 0;
@@ -555,8 +568,8 @@ function VerificarRespuestaCorrecta(frutaOk, preguntaNumero, n) {
             $("#btnRespuestaErr1_Pregunta" + n + preguntaNumero).prop("disabled", true);
             $("#btnRespuestaErr2_Pregunta" + n + preguntaNumero).prop("disabled", true);
             $("#btnRespuestaOk_Pregunta" + n + preguntaNumero).prop("disabled", true);
-            //puntaje += 5;
-            puntaje += valorFruta * valorNivel;
+            puntaje += 5;
+            //puntaje += valorFruta * valorNivel;
             $("#puntaje"+n).html("" + puntaje);
             habilitarBotonSiguiente = true;
         }
@@ -573,8 +586,8 @@ function VerificarPrimeraRespuestaErronea(frutaErr1, preguntaNumero, n) {
             $(this).addClass("btn-danger");
             valorFruta = $(this).data("value");
             if (puntaje >= 2) {
-                puntaje -= valorFruta * valorNivel * 0,5;
-                //puntaje -= 2;
+                //puntaje -= valorFruta * valorNivel * 0,5;
+                puntaje -= 2;
             } else {
                 puntaje = 0;
             }
@@ -599,8 +612,8 @@ function VerificarSegundaRespuestaErronea(frutaErr2, preguntaNumero, n) {
             $(this).addClass("btn-danger");
             valorFruta = $(this).data("value");
             if (puntaje >= 2) {
-                puntaje = puntaje - valorFruta * valorNivel / 2;
-                //puntaje -= 2;
+                //puntaje = puntaje - valorFruta * valorNivel / 2;
+                puntaje -= 2;
             } else {
                 puntaje = 0;
             }
@@ -624,7 +637,6 @@ function eventoClicSgt(){
     $("#btnSiguientePregunta").on({
         click: function () {
             if (habilitarBotonSiguiente) {
-                valorNivel = 5;
                 habilitarBotonSiguiente = false;
                 var numPreguntas = 0;
                 if (nivelActual == 1){
@@ -642,10 +654,12 @@ function eventoClicSgt(){
 function ocultarOMostrarSeccionPreguntaN1(numPreguntas) {
     var numeroDePreguntaSiguiente = contadorDePregunta + 1;
     if (contadorDePregunta == numPreguntas) {
+        valorNivel = 5;
         nivelActual++;
         $("#seccionPreg" + nivelActual + contadorDePregunta).show();
         $("#seccionEvaluacion").fadeOut();
         contadorDePregunta = 1;
+        EvaluarPregunta();
         seccionEvaluacion2();
     }
     else {
@@ -701,6 +715,7 @@ function aparecerPopupInstruc() {
 }
 
 function aparecerPopupWinner() {
+    PostUser();
     var au = $('<audio src="../audio/felicidades.mp3" autoplay type="audio/mpeg"></audio>');
     $("body").append(au);
     $('#conPuntaje').html("HAS RECOPILADO " + puntaje + " PUNTOS");
@@ -718,6 +733,27 @@ function aparecerPopupWinner() {
             $("#despedida").fadeIn();
             var au = $('<audio src="../audio/despedida.mp3" autoplay type="audio/mpeg"></audio>');
             $("body").append(au);
+        }
+    });
+}
+
+function PostUser(){
+    var data = {
+        "puntaje": puntaje
+    };
+    $.ajax({
+        type: 'PUT',
+        url: "/api/user/" + usuario["id"],
+        data: data,
+        async: false,
+        beforeSend: function (xhr) {
+            if (xhr && xhr.overrideMimeType) {
+                xhr.overrideMimeType('application/json;charset=utf-8');
+            }
+        },
+        dataType: 'json',
+        success: function (data) {
+            console.log(data);
         }
     });
 }

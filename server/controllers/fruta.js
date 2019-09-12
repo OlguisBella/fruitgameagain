@@ -50,17 +50,19 @@ module.exports = {
   },
   getfruitCount(req, res) {
     return Fruta
-    .findAll({
-      attributes: [[Sequelize.literal('COUNT(DISTINCT(id))'), 'countOfFruits']]
-    })      
+      .findAll({
+        attributes: [
+          [Sequelize.literal('COUNT(DISTINCT(id))'), 'countOfFruits']
+        ]
+      })
       .then(fruta => res.status(200).send(fruta))
       .catch(error => res.status(400).send(error));
   },
   list(req, res) {
     return Fruta
-    .findAll({
-      attributes: ['id', 'nombre','url','categoriaid','preguntaid']
-    })
+      .findAll({
+        attributes: ['id', 'nombre', 'url', 'categoriaid', 'preguntaid']
+      })
       .then(fruta => res.status(200).send(fruta))
       .catch(error => res.status(400).send(error));
   },
@@ -91,15 +93,31 @@ module.exports = {
             message: 'Fruta No Encontrado',
           });
         }
-        return fruta        
-          .update({
-            nombre: req.body.nombre || fruta.nombre,
-            url: url_cloudinary || fruta.url,
-            categoriaid: req.body.categoriaid,
-            preguntaid: req.body.preguntaid
-          })
-          .then(() => res.redirect('back'))
-          .catch(error => res.status(400).send(error));
+        var name = req.files.url.originalFilename.split(".");
+        var path = name[0] + "-id" + fruta.dataValues.id;
+        var url_cloudinary;
+
+        cloudinary.v2.uploader.upload(req.files.url.path, {
+            public_id: path,
+            tags: ['fruta', 'proyecto-final']
+          },
+          function (error, result) {
+            url_cloudinary = result.url;
+            console.log(url_cloudinary);
+            console.log(result, error);
+            return fruta
+              .update({
+                nombre: req.body.nombre || fruta.nombre,
+                url: url_cloudinary || fruta.url,
+                valor: req.body.valor || fruta.valor,
+                categoriaid: req.body.categoriaid,
+                preguntaid: req.body.preguntaid
+              })
+
+              .then(() => res.redirect('back'))
+              .catch(error => res.status(400).send(error));
+          });
+
       })
       .catch(error => res.status(400).send(error));
   },
@@ -120,5 +138,3 @@ module.exports = {
       .catch(error => res.status(400).send(error));
   },
 };
-
-

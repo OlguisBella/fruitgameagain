@@ -1,3 +1,4 @@
+const userController = require('../controllers').user;
 const categoriaController = require('../controllers').categoria;
 const frutaController = require('../controllers').fruta;
 const puntajeController = require('../controllers').puntaje;
@@ -27,6 +28,7 @@ module.exports = (app) => {
   app.get('/api/nivel', nivelController.listNivel);
   app.get('/api/pregunta', preguntaController.list);
   app.get('/api/fruta', frutaController.list);  
+  app.get('/api/sesion', nivelController.getSession);
 
    //GET list by 
   app.get('/api/fruta/:categoriaid', frutaController.retrieve); 
@@ -38,6 +40,7 @@ module.exports = (app) => {
 
   //PUT update
    app.put('/api/fruta/:id', frutaController.update);
+   app.put('/api/user/:id', userController.update);
    app.put('/api/pregunta/:id', preguntaController.update);
    app.put('/api/opcionRespuesta/:id', opcionRespuestaController.update);
    app.put('/api/puntaje/:idFruta,:idPregunta', puntajeController.updatePuntaje);

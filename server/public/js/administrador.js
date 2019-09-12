@@ -1,7 +1,7 @@
 var costa = [];
 var sierra = [];
-var idCategoriaCosta;
-var idCategoriaSierra;
+var idCategoriaCosta = 1;
+var idCategoriaSierra = 2;
 var selectOpction;
 var selectQuestion;
 var seleccion;

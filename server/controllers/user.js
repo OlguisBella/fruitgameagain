@@ -35,8 +35,9 @@ module.exports = {
       .catch(error => res.status(400).send(error));
   },
   update(req, res) {
+    console.log("shdaskdasddjds-fj");
     return User
-      .findById(req.params.userId)
+      .findByPk(req.params.id)
       .then(user => {
         if (!user) {
           return res.status(404).send({
@@ -57,7 +58,7 @@ module.exports = {
   },
   destroy(req, res) {
     return User
-      .findById(req.params.userId)
+      .findByPk(req.params.userId)
       .then(user => {
         if (!user) {
           return res.status(400).send({

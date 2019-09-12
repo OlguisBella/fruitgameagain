@@ -4,6 +4,7 @@ const puntaje = require('./puntaje');
 const pregunta = require('./pregunta');
 const opcionRespuesta = require('./opcionRespuesta');
 const nivel = require('./nivel');
+const user = require('./user');
 
 module.exports = {
   categoria,
@@ -11,5 +12,6 @@ module.exports = {
   puntaje,
   pregunta,
   nivel,
-  opcionRespuesta 
+  opcionRespuesta,
+  user
 };

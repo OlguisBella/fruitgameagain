@@ -15,6 +15,12 @@ module.exports = {
             .findAll()
             .then(nivel => res.status(200).send(nivel))
             .catch(error => res.status(400).send(error));
+    },
+    getSession(req, res) {
+      return Nivel
+          .findAll()
+          .then(nivel => res.status(200).send(req.user.dataValues))
+          .catch(error => res.status(400).send(error));
     }
 
 };

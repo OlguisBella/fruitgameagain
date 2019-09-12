@@ -65,15 +65,6 @@ app.use(express.static(path.join(__dirname, './server/public')));
 app.set('views', path.join(__dirname, './server/views'));
 app.set('view engine', 'ejs');
 
-
-app.get('/evaluacion', (req, res) =>{
-  res.render('evaluacion.ejs');
-});
-
-app.get('/admin', (req, res) =>{
-  res.render('admin.ejs');
-});
-
 // Require our routes into the application.
 require('./server/routes')(app);
 require('./server/routes/auth')(app, passport);

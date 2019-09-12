@@ -44,9 +44,26 @@ module.exports = (app, passport) => {
     );
 
 	//admin view
-	app.get('/admin', isLoggedIn, (req, res) => {
-		res.render('admin.ejs');
+	app.get('/adminmenu', isLoggedIn, (req, res) => {
+		res.render('admin-menu.ejs');
 	});
+
+	app.get('/pregunta', isLoggedIn, (req, res) => {
+		res.render('admin-pregunta.ejs');
+	});
+	app.get('/categoria', isLoggedIn, (req, res) => {
+		res.render('admin-categoria.ejs');
+	});
+	app.get('/nivel', isLoggedIn, (req, res) => {
+		res.render('admin-nivel.ejs');
+	});
+	app.get('/fruta', isLoggedIn, (req, res) => {
+		res.render('admin-fruta.ejs');
+	});
+	app.get('/opcion', isLoggedIn, (req, res) => {
+		res.render('admin-opcion.ejs');
+	});
+	
 	app.post('/admin', isLoggedIn, passport.authenticate('local-login', {
 		successRedirect: '/admin',
 		failureRedirect: '/login',

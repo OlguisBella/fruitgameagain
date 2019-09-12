@@ -2,20 +2,20 @@ const OpcionRespuesta = require('../models').OpcionRespuesta;
 
 module.exports = {
   create(req, res) {
+    console.log(req.body);
     return OpcionRespuesta
       .create({
         idPregunta:req.body.idPregunta,
-        idOpcion: req.body.idOpcion,
-        opcionRespuesta: req.body.opcionRespuesta,
+        descripcion: req.body.descripcion,
         respuestaValida: req.body.respuestaValida
       })
-      .then(opcionrespuesta => res.status(201).send(opcionrespuesta))
+      .then(() => res.redirect('back'))
       .catch(error => res.status(400).send(error));
   },
   list(req, res) {
     return OpcionRespuesta
     .findAll({
-      attributes: ['id', 'idPregunta','idOpcion','opcionRespuesta','respuestaValida']
+      attributes: ['id', 'descripcion', 'idPregunta','respuestaValida']
     })
       .then(opcionRespuesta => res.status(200).send(opcionRespuesta))
       .catch(error => res.status(400).send(error));
@@ -29,14 +29,13 @@ module.exports = {
             message: 'opcionRespuesta No Encontrado',
           });
         }
-        return OpcionRespuesta
+        return opcionRespuesta
           .update({
-            idPregunta:req.body.idRespuesta,   
-            idOpcion:req.body.idOpcion,         
-            opcionRespuesta:req.body.opcionRespuesta,           
-            respuestaValida:req.body.respuestaValida            
+            idPregunta:req.body.idPregunta,
+            descripcion: req.body.descripcion,
+            respuestaValida: req.body.respuestaValida           
           })
-          .then(updatedOpcionRespuesta => res.status(200).send(updatedOpcionRespuesta))
+          .then(() => res.redirect('back'))
           .catch(error => res.status(400).send(error));
       })
       .catch(error => res.status(400).send(error));
@@ -50,9 +49,9 @@ module.exports = {
             message: 'opcionRespuesta No Encontrada',
           });
         }
-        return OpcionRespuesta
+        return opcionRespuesta
           .destroy()
-          .then(() => res.status(204).send('opcionRespuesta eliminada exitosamente'))
+          .then(() => res.redirect('back'))
           .catch(error => res.status(400).send(error));
       })
       .catch(error => res.status(400).send(error));

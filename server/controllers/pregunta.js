@@ -8,7 +8,7 @@ module.exports = {
         idnivel: req.body.idnivel,
         descripcion: req.body.descripcion
       })
-      .then(pregunta => res.status(201).send(pregunta))
+      .then(() => res.redirect('back'))
       .catch(error => res.status(400).send(error));
   },
   list(req, res) {
@@ -34,7 +34,7 @@ module.exports = {
             idnivel: req.body.idnivel,
             descripcion: req.body.descripcion
           })
-          .then(updatedPregunta => res.status(200).send(updatedPregunta))
+          .then(() => res.redirect('back'))
           .catch(error => res.status(400).send(error));
       })
       .catch(error => res.status(400).send(error));
@@ -55,7 +55,7 @@ module.exports = {
   
         return pregunta
           .destroy()
-          .then(() => res.status(204).send())
+          .then(() => res.redirect('back'))
           .catch(error => res.status(400).send(error));
       })
       .catch(error => res.status(400).send(error));

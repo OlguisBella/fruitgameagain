@@ -20,6 +20,7 @@
     "password": "dca2ff64a9c88d3238a5b1da6a9236017225d72b977eb88f51f0714f1a449fa6",
     "database": "db53in4l8mp7ki",
     "host": "ec2-23-21-115-109.compute-1.amazonaws.com",
-    "dialect": "postgres"   
+    "dialect": "postgres",
+    "operatorsAliases": false
   }
 }

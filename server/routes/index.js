@@ -43,6 +43,8 @@ module.exports = (app) => {
    app.put('/api/user/:id', userController.update);
    app.put('/api/pregunta/:id', preguntaController.update);
    app.put('/api/opcionRespuesta/:id', opcionRespuestaController.update);
+   app.put('/api/nivel/:id', nivelController.update);
+   app.put('/api/categoria/:id', categoriaController.update);
    app.put('/api/puntaje/:idFruta,:idPregunta', puntajeController.updatePuntaje);
 
    //DELETE one element
@@ -51,5 +53,7 @@ module.exports = (app) => {
   app.delete('/api/puntaje', puntajeController.destroyAll);
   app.delete('/api/puntaje/:id,:id', puntajeController.destroyById);
   app.delete('/api/pregunta/:id', preguntaController.destroy);
+  app.delete('/api/nivel/:id', nivelController.destroy);
+  app.delete('/api/categoria/:id', categoriaController.destroy);
   
 };

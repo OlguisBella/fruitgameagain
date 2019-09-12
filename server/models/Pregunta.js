@@ -16,11 +16,6 @@ module.exports = (sequelize, DataTypes) => {
     Pregunta.belongsTo(models.Nivel, {
       foreignKey:'idnivel',  
     });
-
-    Pregunta.belongsTo(models.Fruta, {
-      foreignKey: 'preguntaid',
-      onDelete: 'CASCADE',
-    });
    
     Pregunta.hasMany(models.OpcionRespuesta, {
       foreignKey: 'idPregunta',

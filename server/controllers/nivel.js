@@ -5,8 +5,10 @@ module.exports = {
         return Nivel
           .create({
             descripcion: req.body.descripcion,
+            valor: req.body.valor,
+            categoriaid: req.body.categoriaid,
           })
-          .then(nivel => res.status(201).send(nivel))
+          .then(() => res.redirect('back'))
           .catch(error => res.status(400).send(error));
       },
 
@@ -21,6 +23,47 @@ module.exports = {
           .findAll()
           .then(nivel => res.status(200).send(req.user.dataValues))
           .catch(error => res.status(400).send(error));
+    },
+    update(req, res) {
+      return Nivel
+        .findByPk(req.params.id)
+        .then(nivel => {
+          if (!nivel) {
+            return res.status(404).send({
+              message: 'Nivel No Encontrado',
+            });
+          }
+          return nivel
+            .update({
+              descripcion: req.body.descripcion,
+              valor: req.body.valor,
+              categoriaid: req.body.categoriaid
+            })
+            .then(() => res.redirect('back'))
+            .catch(error => res.status(400).send(error));
+        })
+        .catch(error => res.status(400).send(error));
+    },
+    destroy(req, res) {
+      return Nivel
+        .findOne({
+            where: {
+              id: req.params.id            
+            },
+          })
+        .then(nivel => {
+          if (!nivel) {
+            return res.status(404).send({
+              message: 'Nivel no encontrado',
+            });
+          }
+    
+          return nivel
+            .destroy()
+            .then(() => res.redirect('back'))
+            .catch(error => res.status(400).send(error));
+        })
+        .catch(error => res.status(400).send(error));
     }
 
 };
